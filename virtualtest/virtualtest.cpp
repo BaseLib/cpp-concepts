@@ -102,31 +102,50 @@ void TestVirtualTable()
 	ChildNew objClindNew;
 	//BaseA	objBaseA;
 
-	child2	objClild2;
-	child	objClild;
+	
+	
 	base	objbase;
 
 	int *pVtable=(int*)&objClindNew;
-	printf("\nClass ChildNew Virtual Table Pointer = %X",*pVtable);
+	printf("\nClass ChildNew Virtual Table Pointer = %u",*pVtable);
 
-	pVtable=(int*)&objClild2;
-	printf("\nClass child2 Virtual Table Pointer = %X",*pVtable);
-
-	pVtable=(int*)&objClild;
-	printf("\nClass child Virtual Table Pointer = %X",*pVtable);
-
+	
+///////////////////////////////////////////////////////////////////////////////
 	pVtable=(int*)&objbase;
-	printf("\nClass base Virtual Table Pointer = %X",*pVtable);
+	printf("\nClass base Virtual Table Pointer = %u",*pVtable);
 
 	base b2;
 
 	pVtable=(int*)&b2;
-	printf("\nClass base Object-2 Virtual Table Pointer = %X",*pVtable);
+	printf("\nClass base Object-2 Virtual Table Pointer = %u",*pVtable);
 
 	base b3;
 	pVtable=(int*)&b3;
-	printf("\nClass base Object-3 Virtual Table Pointer = %X",*pVtable);
+	printf("\nClass base Object-3 Virtual Table Pointer = %u",*pVtable);
+////////////////////////////////////////////////////////////////////////////////
+	child2	objClild2;
+	pVtable=(int*)&objClild2;
+	printf("\nClass child2 Virtual Table Pointer = %u",*pVtable);
 
+	child2 obj2Clild2;
+	pVtable=(int*)&obj2Clild2;
+	printf("\nClass child2 Object 2 Virtual Table Pointer = %u",*pVtable);
+
+	child2 obj3Clild2;
+	pVtable=(int*)&obj3Clild2;
+	printf("\nClass child2 Object 3 Virtual Table Pointer = %u",*pVtable);
+////////////////////////////////////////////////////////////////////////////////
+	child	objClild;
+	pVtable=(int*)&objClild;
+	printf("\nClass child Virtual Table Pointer = %u",*pVtable);
+
+	child	obj2Clild;
+	pVtable=(int*)&obj2Clild;
+	printf("\nClass child Object 2 Virtual Table Pointer = %u",*pVtable);
+
+	child	obj3Clild;
+	pVtable=(int*)&obj3Clild;
+	printf("\nClass child Object 3Virtual Table Pointer = %u",*pVtable);
 
 }
 
