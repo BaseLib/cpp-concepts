@@ -66,10 +66,8 @@ public:
 };
 
 
-int _tmain(int argc, _TCHAR* argv[])
+void TestOverride()
 {
-
-	
 	base objBase;
 	child objChild;
 	child2 objChild2;
@@ -92,6 +90,32 @@ int _tmain(int argc, _TCHAR* argv[])
 	pobjChild->func();
 
 	BaseA * pNewBase1 = new ChildNew();
+
+}
+
+void TestVirtualTable()
+{
+	ChildNew objClindNew;
+	//BaseA	objBaseA;
+
+	child2	objClild2;
+	child	objClild;
+	base	objbase;
+
+	//((*(BaseA*)(&objClindNew))).__vfptr;
+
+	//printf(" Class ChildNew Virtual Table Pointer = %u",objClindNew.__vfptr);
+
+
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+
+	TestVirtualTable();
+
+	//TestOverride();
+	
 	return 0;
 }
 
