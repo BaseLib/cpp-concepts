@@ -95,6 +95,10 @@ void TestOverride()
 
 void TestVirtualTable()
 {
+
+//Referance
+//	http://bytes.com/topic/c/answers/942922-virtual-pointer-accessing-vtable-class-inside-program
+//
 	ChildNew objClindNew;
 	//BaseA	objBaseA;
 
@@ -102,9 +106,26 @@ void TestVirtualTable()
 	child	objClild;
 	base	objbase;
 
-	//((*(BaseA*)(&objClindNew))).__vfptr;
+	int *pVtable=(int*)&objClindNew;
+	printf("\nClass ChildNew Virtual Table Pointer = %X",*pVtable);
 
-	//printf(" Class ChildNew Virtual Table Pointer = %u",objClindNew.__vfptr);
+	pVtable=(int*)&objClild2;
+	printf("\nClass child2 Virtual Table Pointer = %X",*pVtable);
+
+	pVtable=(int*)&objClild;
+	printf("\nClass child Virtual Table Pointer = %X",*pVtable);
+
+	pVtable=(int*)&objbase;
+	printf("\nClass base Virtual Table Pointer = %X",*pVtable);
+
+	base b2;
+
+	pVtable=(int*)&b2;
+	printf("\nClass base Object-2 Virtual Table Pointer = %X",*pVtable);
+
+	base b3;
+	pVtable=(int*)&b3;
+	printf("\nClass base Object-3 Virtual Table Pointer = %X",*pVtable);
 
 
 }
