@@ -18,7 +18,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 	int* const constptr1 = &j;
-	constptr1 = &j;
+//	constptr1 = &j;
 	*constptr1 = 20;
 
 
@@ -43,7 +43,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		//int const* ptr;
 	ptrtoconstarr[0] = new int[2];
 	ptrtoconstarr[0] = (int*)12;
-	(ptrtoconstarr[0]+1) = (int*)13;
+	ptrtoconstarr[0] = (int*)12;
+	*ptrtoconstarr[0] = 12;
+	//(ptrtoconstarr[0]+1) = (int*)13;
 	return 0;
 }
 
