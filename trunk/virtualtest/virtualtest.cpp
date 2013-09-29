@@ -5,6 +5,11 @@
 #include "stdio.h"
 #include <iostream>
 
+#define HERE() {\
+	/*cout<<endl<<__FUNCTION__;*/\
+	/*cout<<endl<<__FUNCSIG__;*/\
+	cout<<endl<<__FUNCDNAME__;\
+}
 using namespace std;
 
 class base
@@ -12,30 +17,49 @@ class base
 public:
 	virtual void func()
 	{
-		cout<<"in base"<<endl;
+		HERE();
 	}
-	virtual void func1(int j)
+	/*virtual*/ void func1(int j)
 	{
+		HERE();
+		j=0;
 	
 	}
 	void basefunc()
 	{
-	
+		HERE();	
 	}
+	int i;
 };
 
-class child : base
+class child : virtual public base
 {
 public:
-	void func() override
+	virtual void func() /*override*/
 	{
-		cout<<"in child"<<endl;
+		HERE();
+		//cout<<"in child"<<endl;
 	}
 
-	void testchild()
+	/*virtual*/ void testchild()
 	{
-	
+		HERE();
+	}	
+};
+
+class child1 : virtual public base
+{
+public:
+	virtual void func()
+	{
+		HERE();
 	}
+	void child2func()
+	{
+		HERE();
+	}
+	
+
 };
 
 class child2 : child
@@ -43,14 +67,23 @@ class child2 : child
 public:
 	void func()
 	{
+		HERE();
 	}
 	void child2func()
 	{
-	
+		HERE();
 	}
-	
+};
+
+
+class multibase: virtual public child, virtual public child1
+{
+	virtual void func()
+	{
+	}
 
 };
+
 
 class BaseA
 {
@@ -58,61 +91,91 @@ public:
     virtual int foo() = 0;
 };
 
-
 class ChildNew : public BaseA
 {
 public:
-    int foo() { return 42; }
+    int foo() { HERE(); return 42; }
 };
 
 
 void TestOverride()
 {
-	base objBase;
-	child objChild;
-	child2 objChild2;
-	objBase.func();
-	objChild.func();
-	
-	child *pobjBase = (child*)new base;
-	child *pobjChild = new child;
-	child2 *pobjChild2 =(child2*) new child;
-	child2 *pobjChild3 =(child2*) new base;
-	child2 *pobjChild4 =(child2*) new child2;
-	//pobjChild3->
-	base* pbase =(base*) new child;
-	pbase->basefunc();
-	//pbase->testchild();
-	((child*)pbase)->testchild();
-
-	pobjChild2->func();
-	pobjBase->func();
-	pobjChild->func();
-
-	BaseA * pNewBase1 = new ChildNew();
+//	base objBase;
+//	child objChild;
+//	child2 objChild2;
+//	objBase.func();
+//	objChild.func();
+//	
+//	child *pobjBase = (child*)(new base);		//wrong type of inheritance 
+//	child *pobjChild = new child;
+//	child2 *pobjChild2 =(child2*) new child;
+//	child2 *pobjChild3 =(child2*) new base;
+//	child2 *pobjChild4 =(child2*) new child2;
+//	//pobjChild3->
+//	base* pbase =(base*) new child;
+//	pbase->basefunc();
+//	//pbase->testchild();
+//	((child*)pbase)->testchild();
+//
+//	pobjChild2->func();
+//	pobjBase->func();
+//	pobjChild->func();
+//
+//	BaseA * pNewBase1 = new ChildNew();
+////to remove unreferances variable warning 
+//	(pNewBase1);(pobjChild3);(pobjChild4);(objChild2);
 
 }
 
-void TestVirtualTable()
-{
 
+void TestClassSize()
+{
+	std::cout<<endl<< "          ---- Test Size of class --- ";
+
+	std::cout<<endl<<"Base:" << sizeof(base);
+	std::cout<<endl<<"child:" << sizeof(child);
+	std::cout<<endl<<"child2:" << sizeof(child2);
+	std::cout<<endl<<"multibase:" << sizeof(multibase);
+
+//oops virtual pointer is inherited to all derived classes .. each class will not have it's own vptr,
+//same variable of base is inherited to derived classes 
+}
+
+void TestDiamondProblem()
+{
+//http://www.programmerinterview.com/index.php/c-cplusplus/diamond-problem/
+//http://www.cprogramming.com/tutorial/multiple_inheritance.html
+	std::cout<<endl<< "          ---- Test Diamond inheritance problem  --- ";
+
+	multibase mb;
+
+	//mb.base::i = 0;	//ambugity
+//	mb.i = 0;
+	//std::cout<<endl<< "value of i: " << mb.i;
+
+
+
+}
+
+void TestNumberOfVirtualTable()
+{
+std::cout<<endl<< "          ---- Test Number of virtual tables  --- ";
 //Referance
 //	http://bytes.com/topic/c/answers/942922-virtual-pointer-accessing-vtable-class-inside-program
 //
 	ChildNew objClindNew;
 	//BaseA	objBaseA;
-
-	
 	
 	base	objbase;
 
+///
 	int *pVtable=(int*)&objClindNew;
 	printf("\nClass ChildNew Virtual Table Pointer = %u",*pVtable);
 
 	
 ///////////////////////////////////////////////////////////////////////////////
 	pVtable=(int*)&objbase;
-	printf("\nClass base Virtual Table Pointer = %u",*pVtable);
+	printf("\n\nClass base Virtual Table Pointer = %u",*pVtable);
 
 	base b2;
 
@@ -125,7 +188,7 @@ void TestVirtualTable()
 ////////////////////////////////////////////////////////////////////////////////
 	child2	objClild2;
 	pVtable=(int*)&objClild2;
-	printf("\nClass child2 Virtual Table Pointer = %u",*pVtable);
+	printf("\n\nClass child2 Virtual Table Pointer = %u",*pVtable);
 
 	child2 obj2Clild2;
 	pVtable=(int*)&obj2Clild2;
@@ -137,7 +200,7 @@ void TestVirtualTable()
 ////////////////////////////////////////////////////////////////////////////////
 	child	objClild;
 	pVtable=(int*)&objClild;
-	printf("\nClass child Virtual Table Pointer = %u",*pVtable);
+	printf("\n\nClass child Virtual Table Pointer = %u",*pVtable);
 
 	child	obj2Clild;
 	pVtable=(int*)&obj2Clild;
@@ -149,10 +212,12 @@ void TestVirtualTable()
 
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int _tmain(int /*argc*/, _TCHAR* /*argv[]*/)
 {
-
-	TestVirtualTable();
+	HERE();
+	TestClassSize();
+	TestDiamondProblem();
+	TestNumberOfVirtualTable();
 
 	//TestOverride();
 	
@@ -177,6 +242,7 @@ class parent {
 public:
   virtual void handle_event(int something) const = 0 {
     // boring default code
+	  (something);
   }
 
   void funcdata()
@@ -196,6 +262,7 @@ class mychild : public parent {
 public:
   virtual void handle_event(int something) const/* override  */{
     // new exciting code
+	  (something);
   }
   
 };
